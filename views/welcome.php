@@ -1,14 +1,3 @@
-<?php
-session_start();
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php'); // Redirigir al login si no ha iniciado sesión
-    exit();
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,7 +9,7 @@ if (!isset($_SESSION['usuario_id'])) {
 <body>
 
 <div class="container mt-5">
-    <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombres']); ?>!</h2>
+    <h2>Bienvenido, <?php echo isset($_SESSION['nombres']) ? htmlspecialchars($_SESSION['nombres']) : 'Visitante'; ?>!</h2>
     <p>Has iniciado sesión exitosamente.</p>
     <a href="logout.php" class="btn btn-danger">Cerrar Sesión</a>
 </div>
