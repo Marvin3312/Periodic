@@ -11,9 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = $_POST['correo'];
     $contrasena = $_POST['contrasena'];
     
-    // Hash de la contraseña
-    $hashed_password = password_hash($contrasena, PASSWORD_DEFAULT);
-
     // Consulta para insertar un nuevo usuario
     $sql = "INSERT INTO Usuarios (nombres, apellidos, telefono, correo, contrasena) VALUES (:nombres, :apellidos, :telefono, :correo, :contrasena)";
     
@@ -22,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':apellidos', $apellidos);
     $stmt->bindParam(':telefono', $telefono);
     $stmt->bindParam(':correo', $correo);
-    $stmt->bindParam(':contrasena', $hashed_password);
+    $stmt->bindParam(':contrasena', $contrasena); // Almacenar la contraseña sin encriptar
     
     if ($stmt->execute()) {
         // Redirigir o mostrar un mensaje de éxito
