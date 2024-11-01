@@ -6,8 +6,8 @@ class ArticleController {
         global $conexion; // Asegúrate de que $conexion esté configurado para Oracle
 
         // Consulta para obtener todos los artículos
-        $sql = "SELECT * FROM Articulos";
-        
+        $sql = "SELECT * FROM Articulos ORDER BY fecha_creacion DESC";
+
         // Preparar y ejecutar la consulta
         $stmt = $conexion->prepare($sql);
         $stmt->execute();

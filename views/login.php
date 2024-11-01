@@ -1,4 +1,5 @@
 <?php
+session_start();
 require '../controllers/AuthController.php';
 $authController = new AuthController();
 
@@ -6,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = $_POST['correo'];
     $contrasena = $_POST['contrasena'];
     if ($authController->login($correo, $contrasena)) {
+        $_SESSION['usuario'] = $correo; // Guardar el correo del usuario en la sesión
         header('Location: ../index.php');
         exit();
     } else {
