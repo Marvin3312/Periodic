@@ -1,8 +1,14 @@
 <?php
-require './includes/db.php';
+require_once __DIR__ . '/../controllers/ArticleController.php';
+
 $articleController = new ArticleController();
 $articulos = $articleController->getAllArticles();
-?>
+
+// Imprimir los datos recuperados para depuración
+//echo '<pre>';
+//print_r($articulos);
+//echo '</pre>';
+//?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -20,8 +26,8 @@ $articulos = $articleController->getAllArticles();
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo htmlspecialchars($articulo['titulo']); ?></h5>
-                        <p class="card-text"><?php echo htmlspecialchars($articulo['contenido']); ?></p>
+                        <h5 class="card-title"><?php echo htmlspecialchars($articulo['TITULO']); ?></h5>
+                        <p class="card-text"><?php echo htmlspecialchars($articulo['CONTENIDO']); ?></p>
                     </div>
                 </div>
             </div>
