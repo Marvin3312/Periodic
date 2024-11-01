@@ -8,7 +8,7 @@ $password = '12345';  // Contraseña del usuario
 
 try {
     // Crear la cadena de conexión para Oracle
-    $conexion = new PDO("oci:dbname=$host:$port/$sid", $username, $password);
+    $conexion = new PDO("oci:dbname=//$host:$port/$sid", $username, $password);
     $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     echo "Conexión exitosa"; // Mensaje para verificar que la conexión fue exitosa
