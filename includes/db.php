@@ -1,15 +1,17 @@
 <?php
 // Configuración de la conexión a la base de datos
 $host = 'localhost';  // Servidor de la base de datos
-$port = '3307';       // Puerto donde corre MySQL
-$dbname = 'proyectobda'; // Nombre de la base de datos
-$username = 'root';   // Usuario de la base de datos
-$password = '';       // Contraseña del usuario (ajusta si es necesario)
+$port = '1521';       // Puerto donde corre Oracle
+$sid = 'sidd';        // SID de Oracle
+$username = 'system'; // Usuario de la base de datos
+$password = '12345';  // Contraseña del usuario
 
 try {
-    // La variable de conexión debe incluir el puerto
-    $conexion = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $username, $password);
+    // Crear la cadena de conexión para Oracle
+    $conexion = new PDO("oci:dbname=$host:$port/$sid", $username, $password);
     $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    echo "Conexión exitosa"; // Mensaje para verificar que la conexión fue exitosa
 } catch (PDOException $e) {
     die("Error en la conexión: " . $e->getMessage());
 }
