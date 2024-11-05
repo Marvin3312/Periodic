@@ -15,9 +15,8 @@ class AuthController {
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($usuario) {
-            $_SESSION['usuario_id'] = $usuario['id'];
-            $_SESSION['nombres'] = $usuario['nombres'];
-            $_SESSION['rol'] = $usuario['rol']; // Asumiendo que tienes un campo 'rol' en la tabla Usuarios
+            $_SESSION['usuario_id'] = $usuario['ID'];
+           // $_SESSION['nombres'] = $usuario['NOMBRES'];
             return true;
         } else {
             return false;
@@ -25,9 +24,17 @@ class AuthController {
     }
 
     public function logout() {
+        session_start();
+        session_unset();
         session_destroy();
         header('Location: ../index.php');
         exit();
     }
+}
+
+// Manejar la acción de logout
+if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+    $authController = new AuthController();
+    $authController->logout();
 }
 ?>

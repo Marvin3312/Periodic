@@ -1,3 +1,9 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,17 +22,16 @@
         <ul class="navbar-nav ml-auto">
             <?php if (isset($_SESSION['usuario_id'])): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="views/create_article.php">Crear Artículo</a>
+                    <a class="nav-link" href="/prensa%20libre%20/create_article.php">Crear Artículo</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="controllers/AuthController.php?action=logout">Cerrar Sesión</a>
+                    <a class="nav-link" href="/prensa%20libre%20/controllers/AuthController.php?action=logout">Cerrar Sesión</a>
                 </li>
             <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="views/login.php">Iniciar Sesión</a>
+                    <a class="nav-link" href="/prensa%20libre%20/views/login.php">Iniciar Sesión</a>
                 </li>
             <?php endif; ?>
         </ul>
     </div>
 </nav>
-<div class="container mt-5">

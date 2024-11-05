@@ -1,23 +1,32 @@
 <?php
 session_start();
-require './includes/db.php'; // Incluir la conexión a la base de datos
+require './includes/db.php'; // Asegúrate de que la ruta sea correcta
 
 // Verificar si el usuario está logueado
-if (!isset($_SESSION['usuario'])) {
-    header('Location: login.php');
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: ../views/login.php'); // Redirigir a la página de login si no está logueado
     exit();
 }
 
 $error = ''; // Variable para almacenar mensajes de error
 
+// Obtener las categorías desde la base de datos
+$sqlCategorias = "SELECT * FROM Categorias";
+$stmtCategorias = $conexion->prepare($sqlCategorias);
+$stmtCategorias->execute();
+$categorias = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);
+
 // Procesar el formulario si se envía
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titulo = $_POST['titulo'];
     $contenido = $_POST['contenido'];
-    $imagenes = $_POST['imagenes'];
-    $estado_id = $_POST['estado_id'];
-    $usuario_id = $_SESSION['usuario_id']; // Asumimos que el ID del usuario está almacenado en la sesión
+    $imagenes = null;
+    $estado_id = null;
+    $usuario_id = null; 
     $categoria_id = $_POST['categoria_id'];
+
+    // Depuración: Verificar los valores antes de la inserción
+    var_dump($titulo, $contenido, $imagenes, $estado_id, $usuario_id, $categoria_id);
 
     // Consulta para insertar un nuevo artículo
     $sql = "INSERT INTO Articulos (titulo, contenido, imagenes, estado_id, usuario_id, categoria_id) VALUES (:titulo, :contenido, :imagenes, :estado_id, :usuario_id, :categoria_id)";
@@ -27,16 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':contenido', $contenido);
     $stmt->bindParam(':imagenes', $imagenes);
     $stmt->bindParam(':estado_id', $estado_id);
-    $stmt->bindParam(':usuario_id', $usuario_id);
-    $stmt->bindParam(':categoria_id', $categoria_id);
+    $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+    $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);
     
-    if ($stmt->execute()) {
-        // Redirigir o mostrar un mensaje de éxito
-        header('Location: ../index.php'); // Redirigir a la página principal
+    try {
+        $stmt->execute();
+        // Redirigir a la página principal
+        header('Location: http://localhost:800/prensa%20libre%20/');
         exit();
-    } else {
+    } catch (PDOException $e) {
         // Mensaje de error en caso de fallo en la inserción
-        $error = "Error al crear el artículo. Intenta nuevamente.";
+        $error = "Error al crear el artículo: " . $e->getMessage();
     }
 }
 ?>
@@ -67,17 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="contenido">Contenido:</label>
             <textarea class="form-control" name="contenido" required></textarea>
         </div>
+      
         <div class="form-group">
-            <label for="imagenes">Imágenes:</label>
-            <textarea class="form-control" name="imagenes"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="estado_id">Estado ID:</label>
-            <input type="number" class="form-control" name="estado_id" required>
-        </div>
-        <div class="form-group">
-            <label for="categoria_id">Categoría ID:</label>
-            <input type="number" class="form-control" name="categoria_id" required>
+            <label for="categoria_id">Categoría:</label>
+            <select class="form-control" name="categoria_id" required>
+                <?php foreach ($categorias as $categoria): ?>
+                    <option value="<?php echo $categoria['ID']; ?>"><?php echo $categoria['NOMBRE']; ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Crear Artículo</button>
     </form>

@@ -1,9 +1,5 @@
-
-
-
 <?php
 session_start();
-
 require 'includes/header.php';
 ?>
 
@@ -17,17 +13,10 @@ require 'includes/header.php';
 </head>
 <body>
 <div class="container mt-5">
-    
-    <?php if (isset($_SESSION['usuario'])): ?>
-        <a href="create_article.php" class="btn btn-primary">Crear Artículo</a>
-    <?php else: ?>
-        <a href="login.php" class="btn btn-secondary">Iniciar Sesión</a>
-    <?php endif; ?>
+    <!-- Aquí se mostrarán los artículos para leer -->
+    <?php require 'views/articles.php'; ?>
 </div>
+
+<?php require 'includes/footer.php'; ?>
 </body>
 </html>
-<?php
-require 'views/articles.php';
-require 'includes/footer.php';
-?>
-
